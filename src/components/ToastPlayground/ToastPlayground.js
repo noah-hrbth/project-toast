@@ -1,6 +1,7 @@
 import React from 'react';
 
 import Button from '../Button';
+import Toast from '../Toast';
 
 import styles from './ToastPlayground.module.css';
 
@@ -9,6 +10,7 @@ const VARIANT_OPTIONS = ['notice', 'warning', 'success', 'error'];
 function ToastPlayground() {
 	const [message, setMessage] = React.useState('');
 	const [selectedVariant, setSelectedVariant] = React.useState('');
+	const [isToastVisible, setIsToastVisible] = React.useState(false);
 
 	const handleMessageChange = (event) => {
 		setMessage(event.target.value);
@@ -18,12 +20,25 @@ function ToastPlayground() {
 		setSelectedVariant(event.target.value);
 	};
 
+	const handleShowToastButtonClick = () => {
+		if (!isToastVisible) {
+			setIsToastVisible(true);
+		}
+	};
+
 	return (
 		<div className={styles.wrapper}>
 			<header>
 				<img alt='Cute toast mascot' src='/toast.png' />
 				<h1>Toast Playground</h1>
 			</header>
+
+			<Toast
+				message={message}
+				type={selectedVariant}
+				isVisible={isToastVisible}
+				setIsVisible={setIsToastVisible}
+			/>
 
 			<div className={styles.controlsWrapper}>
 				<div className={styles.row}>
@@ -64,7 +79,7 @@ function ToastPlayground() {
 				<div className={styles.row}>
 					<div className={styles.label} />
 					<div className={`${styles.inputWrapper} ${styles.radioWrapper}`}>
-						<Button>Pop Toast!</Button>
+						<Button onClick={handleShowToastButtonClick}>Pop Toast!</Button>
 					</div>
 				</div>
 			</div>
