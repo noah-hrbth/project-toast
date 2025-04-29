@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useContext } from 'react';
+
+import { ToastContext } from '../ToastProvider/ToastProvider';
 
 import Button from '../Button';
 
@@ -12,15 +14,7 @@ function ToastPlayground() {
 	const [selectedVariant, setSelectedVariant] = React.useState(
 		VARIANT_OPTIONS[0]
 	);
-	const [toastList, setToastList] = React.useState([]);
-
-	const createToast = () => {
-		return {
-			id: crypto.randomUUID(),
-			message: message,
-			type: selectedVariant,
-		};
-	};
+	const { createToast } = useContext(ToastContext);
 
 	const handleMessageChange = (event) => {
 		setMessage(event.target.value);
@@ -31,9 +25,7 @@ function ToastPlayground() {
 	};
 
 	const handleFormSubmit = () => {
-		const nextToastList = [...toastList, createToast()];
-		setToastList(nextToastList);
-
+		createToast(message, selectedVariant);
 		setMessage('');
 		setSelectedVariant(VARIANT_OPTIONS[0]);
 	};
@@ -45,7 +37,7 @@ function ToastPlayground() {
 				<h1>Toast Playground</h1>
 			</header>
 
-			<ToastShelf toastList={toastList} setToastList={setToastList} />
+			<ToastShelf />
 
 			<form
 				className={styles.controlsWrapper}
