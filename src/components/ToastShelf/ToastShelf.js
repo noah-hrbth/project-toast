@@ -1,27 +1,16 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 
 import { ToastContext } from '../ToastProvider/ToastProvider';
 
 import Toast from '../Toast';
 
 import styles from './ToastShelf.module.css';
+import useKeyDownEvent from '../../hooks/useKeyDownEvent';
 
 function ToastShelf() {
   const { toastList, dismissToast, dismissAllToasts } = useContext(ToastContext);
 
-  useEffect(() => {
-    const handleDismissAllToastsOnEsc = (event) => {
-      if (event.code !== 'Escape') return;
-
-      dismissAllToasts();
-    }
-
-    window.addEventListener('keydown', handleDismissAllToastsOnEsc);
-
-    return () => {
-      window.removeEventListener('keydown', handleDismissAllToastsOnEsc)
-    }
-  }, [dismissAllToasts])
+  useKeyDownEvent('Escape', dismissAllToasts);
 
   return (
     <ul className={styles.wrapper} role="region"
